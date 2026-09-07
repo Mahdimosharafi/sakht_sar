@@ -1,10 +1,10 @@
 <?php
 /**
- * Sakht Sar theme bootstrap.
+ * Sakht Sar theme bootstrap and global Customizer settings.
  */
 if (!defined('ABSPATH')) exit;
 
-define('SAKHTSAR_VERSION', '1.1.0');
+define('SAKHTSAR_VERSION', '1.2.0');
 
 function sakhtsar_setup() {
     add_theme_support('title-tag');
@@ -23,50 +23,46 @@ function sakhtsar_assets() {
 add_action('wp_enqueue_scripts','sakhtsar_assets');
 
 function sakhtsar_customize($wp_customize) {
-    $wp_customize->add_section('sakhtsar_home', [
-        'title'=>'سخت‌سر | صفحه اصلی',
-        'description'=>'تنظیمات اصلی Homepage سخت‌سر',
-        'priority'=>30,
+    $wp_customize->add_section('sakhtsar_site', [
+        'title'=>'سخت‌سر | تنظیمات سایت',
+        'description'=>'تنظیمات سراسری هدر، صفحه اصلی و فوتر',
+        'priority'=>25,
     ]);
 
-    $text_fields = [
-        'hero_title'=>['عنوان Hero','رامسر'],
-        'hero_subtitle'=>['زیرعنوان Hero','بهشت همیشه سبز'],
-        'weather_temp'=>['دمای فعلی','18°'],
-        'weather_state'=>['وضعیت هوا','نیمه ابری'],
-        'footer_description'=>['توضیح Footer','سخت‌سر، راهنمای جامع گردشگری، فرهنگ و زندگی رامسر'],
+    $fields = [
+        'hero_title'=>['عنوان اصلی','رامسر','text','sanitize_text_field'],
+        'hero_subtitle'=>['زیرعنوان','بهشت همیشه سبز','text','sanitize_text_field'],
+        'hero_kicker'=>['متن بالای عنوان','سخت سر، راهنمای جامع شما برای کشف طبیعت، فرهنگ و تاریخ','text','sanitize_text_field'],
+        'hero_description'=>['توضیح Hero','سخت سر، راهنمای جامع شما برای کشف طبیعت، فرهنگ، تاریخ و زیبایی‌های بی‌نظیر رامسر','textarea','sanitize_textarea_field'],
+        'weather_temp'=>['دمای فعلی','18°','text','sanitize_text_field'],
+        'weather_state'=>['وضعیت هوا','نیمه ابری','text','sanitize_text_field'],
+        'footer_description'=>['توضیح Footer','سخت‌سر، راهنمای جامع گردشگری، فرهنگ و زندگی رامسر','textarea','sanitize_textarea_field'],
+        'footer_phone'=>['شماره تماس','011-552xxxxx','text','sanitize_text_field'],
+        'footer_email'=>['ایمیل','info@sakhtsar.ir','text','sanitize_email'],
+        'footer_address'=>['آدرس','رامسر، میدان شهرداری','text','sanitize_text_field'],
     ];
-
-    foreach($text_fields as $id=>$f){
-        $is_textarea = $id === 'footer_description';
-        $wp_customize->add_setting('sakhtsar_'.$id,[
-            'default'=>$f[1],
-            'sanitize_callback'=>$is_textarea?'sanitize_textarea_field':'sanitize_text_field',
-        ]);
-        $wp_customize->add_control('sakhtsar_'.$id,[
-            'section'=>'sakhtsar_home',
-            'label'=>$f[0],
-            'type'=>$is_textarea?'textarea':'text',
-        ]);
+    foreach ($fields as $id=>$f) {
+        $wp_customize->add_setting('sakhtsar_'.$id,['default'=>$f[1],'sanitize_callback'=>$f[3]]);
+        $wp_customize->add_control('sakhtsar_'.$id,['section'=>'sakhtsar_site','label'=>$f[0],'type'=>$f[2]]);
     }
 
-    // Real WordPress media picker instead of a raw image URL field.
-    $wp_customize->add_setting('sakhtsar_hero_image',[
-        'default'=>'',
-        'sanitize_callback'=>'esc_url_raw',
-    ]);
+    $wp_customize->add_setting('sakhtsar_hero_image',['default'=>'','sanitize_callback'=>'esc_url_raw']);
     $wp_customize->add_control(new WP_Customize_Image_Control($wp_customize,'sakhtsar_hero_image',[
-        'section'=>'sakhtsar_home',
-        'label'=>'تصویر اصلی Hero',
-        'description'=>'تصویر بزرگ بالای صفحه را از رسانه‌های وردپرس انتخاب یا آپلود کنید.',
+        'section'=>'sakhtsar_site','label'=>'تصویر اصلی Hero','description'=>'تصویر Hero را از کتابخانه رسانه انتخاب کنید.'
+    ]));
+
+    $wp_customize->add_setting('sakhtsar_footer_logo',['default'=>'','sanitize_callback'=>'esc_url_raw']);
+    $wp_customize->add_control(new WP_Customize_Image_Control($wp_customize,'sakhtsar_footer_logo',[
+        'section'=>'sakhtsar_site','label'=>'لوگوی Footer','description'=>'لوگوی فوتر را از کتابخانه رسانه انتخاب کنید.'
     ]));
 }
 add_action('customize_register','sakhtsar_customize');
 
-function sakhtsar_get($key,$fallback='') {
-    return get_theme_mod('sakhtsar_'.$key,$fallback);
-}
+function sakhtsar_get($key,$fallback='') { return get_theme_mod('sakhtsar_'.$key,$fallback); }
+function sakhtsar_img($url) { return esc_url($url); }
 
-function sakhtsar_img($url) {
-    return esc_url($url);
+/** Return featured image URL with a safe fallback. */
+function sakhtsar_featured_image($post_id,$fallback='') {
+    $url = get_the_post_thumbnail_url($post_id,'large');
+    return $url ?: $fallback;
 }
