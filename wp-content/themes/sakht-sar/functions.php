@@ -1,68 +1,106 @@
 <?php
 /**
- * Sakht Sar theme bootstrap and global Customizer settings.
+ * Sakht Sar — WordPress bootstrap, CPTs, taxonomies, meta boxes and Customizer.
  */
 if (!defined('ABSPATH')) exit;
 
-define('SAKHTSAR_VERSION', '2.0.0');
+define('SAKHTSAR_VERSION', '2.1.0');
 
 function sakhtsar_setup() {
     add_theme_support('title-tag');
     add_theme_support('post-thumbnails');
-    add_theme_support('html5', ['search-form','comment-form','comment-list','gallery','caption','style','script']);
-    add_theme_support('custom-logo', ['height'=>80,'width'=>180,'flex-height'=>true,'flex-width'=>true]);
-    register_nav_menus(['primary'=>'منوی اصلی']);
+    add_theme_support('html5', array('search-form','comment-form','comment-list','gallery','caption','style','script'));
+    add_theme_support('custom-logo', array('height'=>80,'width'=>180,'flex-height'=>true,'flex-width'=>true));
+    register_nav_menus(array('primary'=>'منوی اصلی'));
 }
 add_action('after_setup_theme','sakhtsar_setup');
 
 function sakhtsar_assets() {
-    wp_enqueue_style('sakhtsar-style', get_stylesheet_uri(), [], SAKHTSAR_VERSION);
-    $rtl = get_template_directory_uri().'/assets/css/rtl-overrides.css';
-    wp_enqueue_style('sakhtsar-rtl-overrides', $rtl, ['sakhtsar-style'], SAKHTSAR_VERSION);
-    wp_enqueue_script('sakhtsar-main', get_template_directory_uri().'/assets/js/main.js', [], SAKHTSAR_VERSION, true);
+    wp_enqueue_style('sakhtsar-style', get_stylesheet_uri(), array(), SAKHTSAR_VERSION);
+    wp_enqueue_style('sakhtsar-rtl-overrides', get_template_directory_uri().'/assets/css/rtl-overrides.css', array('sakhtsar-style'), SAKHTSAR_VERSION);
+    wp_enqueue_script('sakhtsar-main', get_template_directory_uri().'/assets/js/main.js', array(), SAKHTSAR_VERSION, true);
 }
 add_action('wp_enqueue_scripts','sakhtsar_assets');
 
-function sakhtsar_customize($wp_customize) {
-    $wp_customize->add_section('sakhtsar_site', [
-        'title'=>'سخت‌سر | تنظیمات سایت',
-        'description'=>'تنظیمات سراسری هدر، صفحه اصلی و فوتر',
-        'priority'=>25,
-    ]);
-
-    $fields = [
-        'hero_title'=>['عنوان اصلی','رامسر','text','sanitize_text_field'],
-        'hero_subtitle'=>['زیرعنوان','بهشت همیشه سبز','text','sanitize_text_field'],
-        'hero_kicker'=>['متن بالای عنوان','سخت سر، راهنمای جامع شما برای کشف طبیعت، فرهنگ و تاریخ','text','sanitize_text_field'],
-        'hero_description'=>['توضیح Hero','سخت سر، راهنمای جامع شما برای کشف طبیعت، فرهنگ، تاریخ و زیبایی‌های بی‌نظیر رامسر','textarea','sanitize_textarea_field'],
-        'weather_temp'=>['دمای فعلی','18°','text','sanitize_text_field'],
-        'weather_state'=>['وضعیت هوا','نیمه ابری','text','sanitize_text_field'],
-        'footer_description'=>['توضیح Footer','سخت‌سر، راهنمای جامع گردشگری، فرهنگ و زندگی رامسر','textarea','sanitize_textarea_field'],
-        'footer_phone'=>['شماره تماس','011-552xxxxx','text','sanitize_text_field'],
-        'footer_email'=>['ایمیل','info@sakhtsar.ir','text','sanitize_email'],
-        'footer_address'=>['آدرس','رامسر، میدان شهرداری','text','sanitize_text_field'],
-    ];
-    foreach ($fields as $id=>$f) {
-        $wp_customize->add_setting('sakhtsar_'.$id,['default'=>$f[1],'sanitize_callback'=>$f[3]]);
-        $wp_customize->add_control('sakhtsar_'.$id,['section'=>'sakhtsar_site','label'=>$f[0],'type'=>$f[2]]);
+function sakhtsar_register_content() {
+    $types = array(
+        'place'=>array('جاهای رامسر','جای رامسر','dashicons-location-alt','places'),
+        'trip'=>array('مسیرهای گردشگری','مسیر گردشگری','dashicons-location','trips'),
+        'event'=>array('رویدادها','رویداد','dashicons-calendar-alt','events'),
+        'magazine'=>array('مجله سخت‌سر','مقاله مجله','dashicons-edit','magazine'),
+        'gallery_item'=>array('گالری','تصویر گالری','dashicons-format-gallery','gallery'),
+    );
+    foreach ($types as $slug=>$data) {
+        register_post_type($slug,array(
+            'labels'=>array('name'=>$data[0],'singular_name'=>$data[1],'add_new'=>'افزودن جدید','add_new_item'=>'افزودن '.$data[1],'edit_item'=>'ویرایش '.$data[1],'new_item'=>'جدید','view_item'=>'مشاهده','search_items'=>'جستجو','not_found'=>'موردی پیدا نشد','menu_name'=>$data[0]),
+            'public'=>true,'show_in_rest'=>true,'menu_icon'=>$data[2],'rewrite'=>array('slug'=>$data[3]),'has_archive'=>true,
+            'supports'=>array('title','editor','thumbnail','excerpt','revisions','author'),
+        ));
     }
+    register_taxonomy('place_type','place',array('labels'=>array('name'=>'دسته‌بندی مکان','singular_name'=>'دسته مکان'),'public'=>true,'show_in_rest'=>true,'hierarchical'=>true,'rewrite'=>array('slug'=>'place-type')));
+    register_taxonomy('trip_type','trip',array('labels'=>array('name'=>'نوع مسیر','singular_name'=>'نوع مسیر'),'public'=>true,'show_in_rest'=>true,'hierarchical'=>true,'rewrite'=>array('slug'=>'trip-type')));
+    register_taxonomy('event_type','event',array('labels'=>array('name'=>'نوع رویداد','singular_name'=>'نوع رویداد'),'public'=>true,'show_in_rest'=>true,'hierarchical'=>true,'rewrite'=>array('slug'=>'event-type')));
+    register_taxonomy('magazine_category','magazine',array('labels'=>array('name'=>'دسته‌بندی مجله','singular_name'=>'دسته مجله'),'public'=>true,'show_in_rest'=>true,'hierarchical'=>true,'rewrite'=>array('slug'=>'magazine-category')));
+}
+add_action('init','sakhtsar_register_content');
 
-    $wp_customize->add_setting('sakhtsar_hero_image',['default'=>'','sanitize_callback'=>'esc_url_raw']);
-    $wp_customize->add_control(new WP_Customize_Image_Control($wp_customize,'sakhtsar_hero_image',[
-        'section'=>'sakhtsar_site','label'=>'تصویر اصلی Hero','description'=>'تصویر Hero را از کتابخانه رسانه انتخاب کنید.'
-    ]));
+function sakhtsar_meta_boxes() {
+    add_meta_box('sakhtsar_place_details','جزئیات مکان','sakhtsar_place_box','place','normal','high');
+    add_meta_box('sakhtsar_trip_details','جزئیات مسیر','sakhtsar_trip_box','trip','normal','high');
+    add_meta_box('sakhtsar_event_details','جزئیات رویداد','sakhtsar_event_box','event','normal','high');
+    add_meta_box('sakhtsar_gallery_details','جزئیات گالری','sakhtsar_gallery_box','gallery_item','normal','high');
+}
+add_action('add_meta_boxes','sakhtsar_meta_boxes');
 
-    $wp_customize->add_setting('sakhtsar_footer_logo',['default'=>'','sanitize_callback'=>'esc_url_raw']);
-    $wp_customize->add_control(new WP_Customize_Image_Control($wp_customize,'sakhtsar_footer_logo',[
-        'section'=>'sakhtsar_site','label'=>'لوگوی Footer','description'=>'لوگوی فوتر را از کتابخانه رسانه انتخاب کنید.'
-    ]));
+function sakhtsar_meta_input($key,$label,$value,$type='text') {
+    printf('<p><label><strong>%s</strong></label><br><input class="widefat" type="%s" name="%s" value="%s"></p>',esc_html($label),esc_attr($type),esc_attr($key),esc_attr($value));
+}
+function sakhtsar_place_box($post) {
+    wp_nonce_field('sakhtsar_meta','sakhtsar_meta_nonce');
+    sakhtsar_meta_input('sakhtsar_address','آدرس',$post->address??get_post_meta($post->ID,'sakhtsar_address',true));
+    sakhtsar_meta_input('sakhtsar_rating','امتیاز',$post->rating??get_post_meta($post->ID,'sakhtsar_rating',true));
+    sakhtsar_meta_input('sakhtsar_lat','عرض جغرافیایی',get_post_meta($post->ID,'sakhtsar_lat',true));
+    sakhtsar_meta_input('sakhtsar_lng','طول جغرافیایی',get_post_meta($post->ID,'sakhtsar_lng',true));
+}
+function sakhtsar_trip_box($post) {
+    wp_nonce_field('sakhtsar_meta','sakhtsar_meta_nonce');
+    sakhtsar_meta_input('sakhtsar_duration','مدت مسیر',get_post_meta($post->ID,'sakhtsar_duration',true));
+    sakhtsar_meta_input('sakhtsar_distance','مسافت',get_post_meta($post->ID,'sakhtsar_distance',true));
+    sakhtsar_meta_input('sakhtsar_stops','تعداد توقف‌ها',get_post_meta($post->ID,'sakhtsar_stops',true));
+    sakhtsar_meta_input('sakhtsar_difficulty','سطح مسیر',get_post_meta($post->ID,'sakhtsar_difficulty',true));
+}
+function sakhtsar_event_box($post) {
+    wp_nonce_field('sakhtsar_meta','sakhtsar_meta_nonce');
+    sakhtsar_meta_input('sakhtsar_event_date','تاریخ رویداد',get_post_meta($post->ID,'sakhtsar_event_date',true),'date');
+    sakhtsar_meta_input('sakhtsar_event_time','ساعت',get_post_meta($post->ID,'sakhtsar_event_time',true),'time');
+    sakhtsar_meta_input('sakhtsar_event_location','محل برگزاری',get_post_meta($post->ID,'sakhtsar_event_location',true));
+}
+function sakhtsar_gallery_box($post) {
+    wp_nonce_field('sakhtsar_meta','sakhtsar_meta_nonce');
+    sakhtsar_meta_input('sakhtsar_gallery_credit','اعتبار تصویر',get_post_meta($post->ID,'sakhtsar_gallery_credit',true));
+}
+function sakhtsar_save_meta($post_id) {
+    if (!isset($_POST['sakhtsar_meta_nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['sakhtsar_meta_nonce'])),'sakhtsar_meta')) return;
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
+    if (!current_user_can('edit_post',$post_id)) return;
+    $keys=array('sakhtsar_address','sakhtsar_rating','sakhtsar_lat','sakhtsar_lng','sakhtsar_duration','sakhtsar_distance','sakhtsar_stops','sakhtsar_difficulty','sakhtsar_event_date','sakhtsar_event_time','sakhtsar_event_location','sakhtsar_gallery_credit');
+    foreach($keys as $key){ if(isset($_POST[$key])) update_post_meta($post_id,$key,sanitize_text_field(wp_unslash($_POST[$key]))); }
+}
+add_action('save_post','sakhtsar_save_meta');
+
+function sakhtsar_customize($wp_customize) {
+    $wp_customize->add_section('sakhtsar_site',array('title'=>'سخت‌سر | تنظیمات سایت','description'=>'تنظیمات حرفه‌ای هدر، صفحه اصلی و فوتر','priority'=>25));
+    $fields=array(
+        'hero_title'=>array('عنوان اصلی','رامسر','text','sanitize_text_field'),'hero_subtitle'=>array('زیرعنوان','بهشت همیشه سبز','text','sanitize_text_field'),'hero_kicker'=>array('متن بالای عنوان','سخت سر، راهنمای جامع شما برای کشف طبیعت، فرهنگ و تاریخ','text','sanitize_text_field'),'hero_description'=>array('توضیح Hero','سخت سر، راهنمای جامع شما برای کشف طبیعت، فرهنگ، تاریخ و زیبایی‌های بی‌نظیر رامسر','textarea','sanitize_textarea_field'),'weather_temp'=>array('دمای فعلی','18°','text','sanitize_text_field'),'weather_state'=>array('وضعیت هوا','نیمه ابری','text','sanitize_text_field'),'footer_description'=>array('توضیح Footer','سخت‌سر، راهنمای جامع گردشگری، فرهنگ و زندگی رامسر','textarea','sanitize_textarea_field'),'footer_phone'=>array('شماره تماس','011-552xxxxx','text','sanitize_text_field'),'footer_email'=>array('ایمیل','info@sakhtsar.ir','text','sanitize_email'),'footer_address'=>array('آدرس','رامسر، میدان شهرداری','text','sanitize_text_field'));
+    foreach($fields as $id=>$f){$wp_customize->add_setting('sakhtsar_'.$id,array('default'=>$f[1],'sanitize_callback'=>$f[3]));$wp_customize->add_control('sakhtsar_'.$id,array('section'=>'sakhtsar_site','label'=>$f[0],'type'=>$f[2]));}
+    $wp_customize->add_setting('sakhtsar_hero_image',array('default'=>'','sanitize_callback'=>'esc_url_raw')); $wp_customize->add_control(new WP_Customize_Image_Control($wp_customize,'sakhtsar_hero_image',array('section'=>'sakhtsar_site','label'=>'تصویر اصلی Hero')));
+    $wp_customize->add_setting('sakhtsar_footer_logo',array('default'=>'','sanitize_callback'=>'esc_url_raw')); $wp_customize->add_control(new WP_Customize_Image_Control($wp_customize,'sakhtsar_footer_logo',array('section'=>'sakhtsar_site','label'=>'لوگوی Footer')));
 }
 add_action('customize_register','sakhtsar_customize');
 
-function sakhtsar_get($key,$fallback='') { return get_theme_mod('sakhtsar_'.$key,$fallback); }
-function sakhtsar_img($url) { return esc_url($url); }
+function sakhtsar_get($key,$fallback=''){return get_theme_mod('sakhtsar_'.$key,$fallback);}
+function sakhtsar_img($url){return esc_url($url);}
+function sakhtsar_featured_image($post_id,$fallback=''){ $url=get_the_post_thumbnail_url($post_id,'large'); return $url?:$fallback; }
 
-function sakhtsar_featured_image($post_id,$fallback='') {
-    $url = get_the_post_thumbnail_url($post_id,'large');
-    return $url ?: $fallback;
-}
+function sakhtsar_flush_rewrites(){ if(get_option('sakhtsar_rewrite_version')!=='2.1.0'){flush_rewrite_rules(false);update_option('sakhtsar_rewrite_version','2.1.0');} }
+add_action('init','sakhtsar_flush_rewrites',99);
