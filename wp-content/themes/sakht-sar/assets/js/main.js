@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Smooth horizontal place carousel. Direction is normalized for RTL layouts.
+  // Smooth horizontal place carousel.
   document.querySelectorAll('.carousel-btn').forEach((button) => {
     button.addEventListener('click', () => {
       const grid = button.closest('.places-wrap')?.querySelector('.places-grid');
@@ -33,9 +33,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Lightweight reveal effect for sections already present in the viewport.
-  const revealItems = document.querySelectorAll('.service-card, .place-card, .trip-card, .panel, .video-banner');
+  // Lightweight reveal motion without an animation library.
   if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const style = document.createElement('style');
+    style.textContent = '.ss-reveal{opacity:0;transform:translateY(14px);transition:opacity .55s ease,transform .55s ease}.ss-reveal-visible{opacity:1;transform:none}';
+    document.head.appendChild(style);
+    const revealItems = document.querySelectorAll('.service-card, .place-card, .trip-card, .panel, .video-banner');
     revealItems.forEach((item) => item.classList.add('ss-reveal'));
     const observer = new IntersectionObserver((entries, obs) => {
       entries.forEach((entry) => {
