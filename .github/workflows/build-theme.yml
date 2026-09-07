@@ -15,29 +15,37 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Validate WordPress theme files
+        shell: bash
+        run: |
+          set -euo pipefail
+          THEME_DIR="wp-content/themes/sakht-sar"
+          test -d "$THEME_DIR"
+          test -f "$THEME_DIR/style.css"
+          test -f "$THEME_DIR/index.php"
+          grep -q "Theme Name:" "$THEME_DIR/style.css"
+          grep -q "Version:" "$THEME_DIR/style.css"
+
       - name: Create installable theme ZIP
         shell: bash
         run: |
           set -euo pipefail
-          test -d wp-content/themes/sakht-sar
-          test -f wp-content/themes/sakht-sar/style.css
-          test -f wp-content/themes/sakht-sar/index.php
           mkdir -p dist
-          rm -f dist/sakht-sar-wordpress.zip
+          rm -f dist/sakht-sar-installable.zip
           cd wp-content/themes
-          zip -r ../../../dist/sakht-sar-wordpress.zip sakht-sar \
+          zip -r ../../../dist/sakht-sar-installable.zip sakht-sar \
             -x 'sakht-sar/.git/*' \
                'sakht-sar/node_modules/*' \
                'sakht-sar/.DS_Store'
           cd ../../..
-          unzip -t dist/sakht-sar-wordpress.zip
-          unzip -l dist/sakht-sar-wordpress.zip | grep -q 'sakht-sar/style.css'
-          ls -lh dist/sakht-sar-wordpress.zip
+          unzip -l dist/sakht-sar-installable.zip | grep -q 'sakht-sar/style.css'
+          unzip -l dist/sakht-sar-installable.zip | grep -q 'sakht-sar/index.php'
+          unzip -t dist/sakht-sar-installable.zip
 
       - name: Upload installable ZIP
         uses: actions/upload-artifact@v4
         with:
-          name: sakht-sar-wordpress
-          path: dist/sakht-sar-wordpress.zip
+          name: sakht-sar-installable
+          path: dist/sakht-sar-installable.zip
           if-no-files-found: error
           retention-days: 30
