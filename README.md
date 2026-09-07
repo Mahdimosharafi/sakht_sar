@@ -2,6 +2,16 @@
 
 پایه توسعه رابط کاربری و هسته اختصاصی پلتفرم سخت‌سر.
 
+## دانلود پوسته وردپرس
+
+**نسخه قابل نصب وردپرس:**
+
+[دانلود مستقیم `sakht-sar-wordpress.zip`](https://github.com/Mahdimosharafi/sakht_sar/releases/download/theme-23/sakht-sar-wordpress.zip)
+
+این فایل مستقیماً از بخش **نمایش > پوسته‌ها > افزودن پوسته جدید > بارگذاری پوسته** در وردپرس قابل نصب است.
+
+> توجه: گزینه **Code > Download ZIP** نسخه سورس کل مخزن را دانلود می‌کند و برای نصب مستقیم وردپرس مناسب نیست.
+
 ## وضعیت فعلی
 - Homepage v1 مطابق Design Reference
 - Theme وردپرس RTL با ساختار responsive
