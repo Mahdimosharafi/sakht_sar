@@ -4,7 +4,7 @@
  */
 if (!defined('ABSPATH')) exit;
 
-define('SAKHTSAR_VERSION', '1.2.0');
+define('SAKHTSAR_VERSION', '1.3.0');
 
 function sakhtsar_setup() {
     add_theme_support('title-tag');
