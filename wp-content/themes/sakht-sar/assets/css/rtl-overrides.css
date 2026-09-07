@@ -1,26 +1,9 @@
-/* Sakht Sar Homepage — final visual polish */
-:root{--ss-max:1140px;--ss-green:#0b4b27}
-body{background:#fff;overflow-x:hidden}
-.container{width:min(var(--ss-max),calc(100% - 40px))}
-
-/* Header */
-.site-header{height:64px;border-radius:0 0 16px 16px;box-shadow:0 3px 18px rgba(10,55,30,.045)}
-.header-inner{height:64px;gap:26px;direction:ltr}.main-nav{direction:rtl;gap:26px;font-size:11px}.brand{direction:rtl;gap:9px;font-size:17px}.brand-mark{width:42px;height:37px}.brand small{font-size:6.8px}.main-nav a{padding:22px 0 18px}.header-tools{gap:6px}.icon-btn,.weather-pill,.login-btn{height:32px}.icon-btn{width:32px}.login-btn{padding:0 11px;font-size:10px}.weather-pill{padding:0 9px;font-size:10px}
-
-/* Hero */
-.hero{min-height:456px;border-radius:0 0 22px 22px}.hero-inner{min-height:456px;max-width:var(--ss-max);padding:42px 34px 54px;gap:62px}.hero-copy{width:min(650px,61%);direction:rtl}.hero-kicker{font-size:12px;margin-bottom:4px}.hero-title{font-size:64px;letter-spacing:-2.8px;line-height:1.03}.hero-subtitle{font-size:12px;line-height:1.9;max-width:545px;margin:10px 0 17px}.hero-search{height:46px;max-width:640px;box-shadow:0 13px 34px rgba(0,0,0,.17);direction:ltr}.hero-search input{font-size:10px;padding:8px 13px;direction:rtl}.search-category{font-size:9px;padding:0 14px;direction:rtl}.search-icon{width:36px;height:36px;font-size:17px}.quick-tags{gap:6px;margin-top:9px}.quick-tags a{padding:4px 10px;font-size:8px}.weather-card{width:174px;flex:0 0 174px;padding:16px 14px;border-radius:15px;direction:rtl}.temperature{font-size:37px;margin:12px 0}.weather-icon{font-size:29px}.hero-arrow{width:30px;height:30px;font-size:18px}.hero-arrow.next{left:12px}.hero-arrow.prev{right:12px}
-
-/* Floating service rail */
-.quick-services{margin-top:-31px}.service-grid{gap:9px}.service-card{min-height:76px;padding:11px 12px;border-radius:13px;gap:9px;box-shadow:0 8px 22px rgba(12,55,30,.10)}.service-icon{font-size:23px}.service-title{font-size:10.5px}.service-desc{font-size:7.5px}
-
-/* Sections */
-.section{padding:32px 0}.section-head{margin-bottom:13px}.section-title{font-size:17px}.section-link{font-size:9px}
-.places-grid{grid-template-columns:repeat(5,minmax(0,1fr));gap:9px;overflow:visible}.place-card{border-radius:11px;box-shadow:0 4px 13px rgba(0,0,0,.035)}.place-img{height:101px}.place-body{padding:7px 8px 8px}.place-name{font-size:9.5px;margin-bottom:2px}.place-meta{font-size:7.5px}.carousel-btn{width:28px;height:28px}.carousel-btn.left{left:-13px}.carousel-btn.right{right:-13px}
-.trip-section{border-radius:16px;padding:15px 16px;background:linear-gradient(135deg,#f0f4f0,#f8faf7)}.trip-grid{gap:11px}.trip-card{border-radius:11px}.trip-img{height:108px}.trip-body{padding:8px 10px 10px}.trip-title{font-size:10.5px}.trip-type,.trip-info{font-size:7.5px}.trip-info{margin:6px 0}.trip-btn{width:84px;font-size:7.5px;padding:4px 7px}
-.lower-grid{gap:11px}.panel{border-radius:13px;padding:11px;box-shadow:0 4px 15px rgba(12,55,30,.025)}.panel-title{font-size:12px;margin-bottom:8px}.event-item,.mag-item{padding:7px 0;gap:7px}.date-box{width:38px;flex-basis:38px;border-radius:7px;padding:3px 2px}.date-box strong{font-size:13px}.date-box small{font-size:6.5px}.thumb{width:56px;height:39px;flex-basis:56px;border-radius:6px}.item-title{font-size:8.5px}.item-sub{font-size:6.5px}.gallery-grid{gap:5px}.gallery-img{height:56px;border-radius:6px}
-.video-banner{min-height:82px;border-radius:15px;margin-top:2px}.play{width:41px;height:41px;font-size:13px}.video-copy{margin-right:16px}.video-copy strong{font-size:11px}.video-copy span{font-size:7.5px}.video-copy a{font-size:7.5px;padding:3px 15px}.site-footer{margin-top:17px;padding:27px 0 13px}.footer-grid{gap:24px}.footer-brand{font-size:16px}.footer-copy{font-size:7.5px}.footer-col h3{font-size:9.5px}.footer-col a,.footer-contact{font-size:7.5px}
-
-/* Responsive */
-@media(max-width:980px){.container{width:min(94%,var(--ss-max))}.main-nav{gap:15px}.hero-copy{width:62%}.hero-inner{gap:35px;padding-inline:24px}.places-grid{grid-template-columns:repeat(5,190px);overflow-x:auto;padding-bottom:4px;scrollbar-width:none}.places-grid::-webkit-scrollbar{display:none}.lower-grid{grid-template-columns:1fr 1fr}.lower-grid .panel:last-child{grid-column:1/-1}}
-@media(max-width:700px){.container{width:calc(100% - 24px)}.site-header{height:58px}.header-inner{height:58px;gap:8px}.main-nav{display:none}.brand{font-size:15px}.brand-mark{width:36px;height:32px}.brand small{font-size:6px}.header-tools{gap:4px}.weather-pill{display:none}.login-btn{font-size:9px;padding:0 8px}.icon-btn{width:30px;height:30px}.hero{min-height:590px;border-radius:0 0 20px 20px}.hero-inner{min-height:590px;display:flex;flex-direction:column;align-items:stretch;justify-content:flex-end;gap:15px;padding:30px 15px 46px}.hero-copy{width:100%;text-align:center}.hero-kicker{font-size:10px}.hero-title{font-size:47px;letter-spacing:-1.8px}.hero-subtitle{font-size:10px;line-height:1.8;margin:8px auto 13px;max-width:430px}.hero-search{height:44px;max-width:none;margin-inline:auto}.hero-search input{font-size:9px}.search-category{font-size:8px;padding:0 9px}.search-icon{width:34px;height:34px}.quick-tags{justify-content:center}.quick-tags a{font-size:7.5px;padding:3px 8px}.weather-card{position:absolute;top:22px;left:15px;width:150px;padding:12px;border-radius:13px}.temperature{font-size:31px;margin:9px 0}.weather-icon{font-size:24px}.weather-minmax{padding:7px 0;margin:7px 0}.hero-arrow{top:47%}.hero-arrow.next{left:8px}.hero-arrow.prev{right:8px}.quick-services{margin-top:-22px}.service-grid{grid-template-columns:repeat(2,1fr);gap:7px}.service-card{min-height:67px;padding:9px}.service-grid .service-card:last-child{grid-column:1/-1}.section{padding:25px 0}.section-title{font-size:15px}.section-link{font-size:8px}.places-grid{grid-template-columns:repeat(5,150px);gap:8px}.place-img{height:88px}.trip-grid{grid-template-columns:1fr}.trip-img{height:135px}.lower-grid{grid-template-columns:1fr}.lower-grid .panel:last-child{grid-column:auto}.video-banner{margin-top:0}.video-copy{margin-right:10px}.play{width:37px;height:37px}.footer-grid{grid-template-columns:1fr 1fr;gap:18px}.footer-grid>div:first-child{grid-column:1/-1}}
-@media(max-width:420px){.brand span{max-width:112px}.brand strong{font-size:13px}.brand small{font-size:5.5px}.hero-title{font-size:43px}.hero{min-height:575px}.hero-inner{min-height:575px;padding-bottom:42px}.weather-card{width:142px}.weather-head{font-size:8.5px}.temperature{font-size:29px}.service-title{font-size:9.5px}.service-desc{font-size:7px}}
+/* Sakht Sar 2.0 — RTL compatibility layer */
+html[dir="rtl"] body,.rtl{direction:rtl}
+.sakhtsar-home,.site-header,.site-footer{direction:rtl}
+.main-nav,.hero-copy,.weather-card,.video-copy{direction:rtl}
+.hero-search{direction:ltr}
+.hero-search input,.search-category{direction:rtl}
+.wp-block-search input,.wp-block-search button{font-family:inherit}
+img{max-width:100%;height:auto}
+@media(max-width:782px){body.admin-bar .site-header{top:46px}}
