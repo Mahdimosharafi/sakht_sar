@@ -6,7 +6,6 @@ if (!defined('ABSPATH')) exit;
 
 define('SAKHTSAR_VERSION', '1.0.0');
 
-defunction_exists('sakhtsar_setup') && sakhtsar_setup();
 function sakhtsar_setup() {
     add_theme_support('title-tag');
     add_theme_support('post-thumbnails');
@@ -26,7 +25,7 @@ function sakhtsar_customize($wp_customize) {
     $wp_customize->add_section('sakhtsar_home', ['title'=>'سخت‌سر | صفحه اصلی','priority'=>30]);
     $fields = [
         'hero_title'=>['عنوان Hero','رامسر','text'],
-        'hero_subtitle'=>['توضیح Hero','بهشت همیشه سبز','text'],
+        'hero_subtitle'=>['زیرعنوان Hero','بهشت همیشه سبز','text'],
         'hero_image'=>['تصویر Hero','','url'],
         'weather_temp'=>['دمای فعلی','18°','text'],
         'weather_state'=>['وضعیت هوا','نیمه ابری','text'],
