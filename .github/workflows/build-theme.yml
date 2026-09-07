@@ -20,6 +20,8 @@ jobs:
         run: |
           set -euo pipefail
           test -d wp-content/themes/sakht-sar
+          test -f wp-content/themes/sakht-sar/style.css
+          test -f wp-content/themes/sakht-sar/index.php
           mkdir -p dist
           rm -f dist/sakht-sar-wordpress.zip
           cd wp-content/themes
@@ -29,6 +31,7 @@ jobs:
                'sakht-sar/.DS_Store'
           cd ../../..
           unzip -t dist/sakht-sar-wordpress.zip
+          unzip -l dist/sakht-sar-wordpress.zip | grep -q 'sakht-sar/style.css'
           ls -lh dist/sakht-sar-wordpress.zip
 
       - name: Upload installable ZIP
