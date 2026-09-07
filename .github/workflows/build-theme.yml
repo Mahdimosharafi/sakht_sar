@@ -33,11 +33,11 @@ jobs:
           mkdir -p dist
           rm -f dist/sakht-sar-installable.zip
           cd wp-content/themes
-          zip -r ../../../dist/sakht-sar-installable.zip sakht-sar \
+          zip -r ../../dist/sakht-sar-installable.zip sakht-sar \
             -x 'sakht-sar/.git/*' \
                'sakht-sar/node_modules/*' \
                'sakht-sar/.DS_Store'
-          cd ../../..
+          cd ../..
           test -f dist/sakht-sar-installable.zip
           unzip -l dist/sakht-sar-installable.zip | grep -q 'sakht-sar/style.css'
           unzip -l dist/sakht-sar-installable.zip | grep -q 'sakht-sar/index.php'
