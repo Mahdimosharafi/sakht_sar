@@ -1,0 +1,1 @@
+Homepage v2: refined global header/footer, dynamic Core CPT integration, global Customizer, installable theme packaging workflow.
