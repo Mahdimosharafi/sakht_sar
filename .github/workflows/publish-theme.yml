@@ -30,20 +30,22 @@ jobs:
           set -euo pipefail
           rm -rf dist
           mkdir -p dist
-          cd wp-content/themes/sakht-sar
-          zip -r ../../../dist/sakht-sar-wordpress.zip . \
-            -x '.git/*' \
-               'node_modules/*' \
-               '.DS_Store'
-          cd ../../../..
-          unzip -l dist/sakht-sar-wordpress.zip | grep -Eq '[[:space:]]style.css$'
-          unzip -l dist/sakht-sar-wordpress.zip | grep -Eq '[[:space:]]index.php$'
+          cd wp-content/themes
+          zip -r "../../../dist/sakht-sar-wordpress.zip" sakht-sar \
+            -x 'sakht-sar/.git/*' \
+               'sakht-sar/node_modules/*' \
+               'sakht-sar/.DS_Store'
+          cd ../../..
+          test -f dist/sakht-sar-wordpress.zip
+          unzip -l dist/sakht-sar-wordpress.zip | grep -q 'sakht-sar/style.css'
+          unzip -l dist/sakht-sar-wordpress.zip | grep -q 'sakht-sar/index.php'
           unzip -t dist/sakht-sar-wordpress.zip
 
       - name: Publish GitHub Release
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          set -euo pipefail
           TAG="theme-${GITHUB_RUN_NUMBER}"
           gh release create "$TAG" dist/sakht-sar-wordpress.zip \
             --title "Sakht Sar WordPress Theme $TAG" \
