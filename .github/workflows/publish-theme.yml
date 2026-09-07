@@ -10,19 +10,35 @@ permissions:
 
 jobs:
   publish:
-    if: contains(github.event.head_commit.message, '[publish-theme]') || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Build installable theme ZIP
+      - name: Validate theme
+        shell: bash
         run: |
+          set -euo pipefail
+          THEME_DIR="wp-content/themes/sakht-sar"
+          test -f "$THEME_DIR/style.css"
+          test -f "$THEME_DIR/index.php"
+          grep -q "Theme Name:" "$THEME_DIR/style.css"
+
+      - name: Build installable WordPress ZIP
+        shell: bash
+        run: |
+          set -euo pipefail
           rm -rf dist
           mkdir -p dist/sakht-sar
           cp -R wp-content/themes/sakht-sar/. dist/sakht-sar/
           cd dist
-          zip -r sakht-sar-wordpress.zip sakht-sar
+          zip -r sakht-sar-wordpress.zip sakht-sar \
+            -x 'sakht-sar/.git/*' \
+               'sakht-sar/node_modules/*' \
+               'sakht-sar/.DS_Store'
+          unzip -l sakht-sar-wordpress.zip | grep -q 'sakht-sar/style.css'
+          unzip -l sakht-sar-wordpress.zip | grep -q 'sakht-sar/index.php'
+          unzip -t sakht-sar-wordpress.zip
 
       - name: Publish GitHub Release
         env:
@@ -31,4 +47,4 @@ jobs:
           TAG="theme-${GITHUB_RUN_NUMBER}"
           gh release create "$TAG" dist/sakht-sar-wordpress.zip \
             --title "Sakht Sar WordPress Theme $TAG" \
-            --notes "Installable WordPress theme ZIP. Upload this ZIP directly in WordPress under Appearance > Themes > Add New > Upload Theme."
+            --notes "Installable WordPress theme ZIP. In WordPress go to Appearance > Themes > Add New > Upload Theme and upload sakht-sar-wordpress.zip."
