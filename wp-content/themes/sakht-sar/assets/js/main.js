@@ -1,9 +1,49 @@
-document.addEventListener('DOMContentLoaded',()=>{
-  const hero=document.querySelector('.hero');
-  if(hero){
-    const move=e=>{if(window.innerWidth<900)return;const x=(e.clientX/window.innerWidth-.5)*8;const y=(e.clientY/window.innerHeight-.5)*4;hero.style.backgroundPosition=`calc(50% + ${x}px) calc(50% + ${y}px)`};
-    window.addEventListener('mousemove',move,{passive:true});
+document.addEventListener('DOMContentLoaded', () => {
+  const hero = document.querySelector('.hero');
+
+  // Subtle desktop parallax — disabled for touch devices and reduced-motion users.
+  if (hero && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const move = (event) => {
+      if (window.innerWidth < 900 || window.matchMedia('(pointer: coarse)').matches) return;
+      const x = (event.clientX / window.innerWidth - 0.5) * 7;
+      const y = (event.clientY / window.innerHeight - 0.5) * 3.5;
+      hero.style.backgroundPosition = `calc(50% + ${x}px) calc(50% + ${y}px)`;
+    };
+    window.addEventListener('mousemove', move, { passive: true });
   }
-  document.querySelectorAll('.hero-search').forEach(form=>form.addEventListener('submit',()=>{const input=form.querySelector('input');if(input && !input.value.trim()){input.focus();}}));
-  document.querySelectorAll('.carousel-btn').forEach(btn=>btn.addEventListener('click',()=>{const grid=btn.closest('.places-wrap')?.querySelector('.places-grid');if(grid)grid.scrollBy({left:btn.classList.contains('left')?-300:300,behavior:'smooth'});}));
+
+  // Search keeps the experience friendly instead of submitting an empty query.
+  document.querySelectorAll('.hero-search').forEach((form) => {
+    form.addEventListener('submit', (event) => {
+      const input = form.querySelector('input[name="s"]');
+      if (input && !input.value.trim()) {
+        event.preventDefault();
+        input.focus();
+      }
+    });
+  });
+
+  // Smooth horizontal place carousel. Direction is normalized for RTL layouts.
+  document.querySelectorAll('.carousel-btn').forEach((button) => {
+    button.addEventListener('click', () => {
+      const grid = button.closest('.places-wrap')?.querySelector('.places-grid');
+      if (!grid) return;
+      const direction = button.classList.contains('left') ? -1 : 1;
+      grid.scrollBy({ left: direction * 310, behavior: 'smooth' });
+    });
+  });
+
+  // Lightweight reveal effect for sections already present in the viewport.
+  const revealItems = document.querySelectorAll('.service-card, .place-card, .trip-card, .panel, .video-banner');
+  if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    revealItems.forEach((item) => item.classList.add('ss-reveal'));
+    const observer = new IntersectionObserver((entries, obs) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('ss-reveal-visible');
+        obs.unobserve(entry.target);
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -30px' });
+    revealItems.forEach((item) => observer.observe(item));
+  }
 });
