@@ -31,11 +31,11 @@ jobs:
           rm -rf dist
           mkdir -p dist
           cd wp-content/themes
-          zip -r "../../../dist/sakht-sar-wordpress.zip" sakht-sar \
+          zip -r "../../dist/sakht-sar-wordpress.zip" sakht-sar \
             -x 'sakht-sar/.git/*' \
                'sakht-sar/node_modules/*' \
                'sakht-sar/.DS_Store'
-          cd ../../..
+          cd ../..
           test -f dist/sakht-sar-wordpress.zip
           unzip -l dist/sakht-sar-wordpress.zip | grep -q 'sakht-sar/style.css'
           unzip -l dist/sakht-sar-wordpress.zip | grep -q 'sakht-sar/index.php'
