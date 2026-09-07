@@ -32,14 +32,14 @@ jobs:
           set -euo pipefail
           mkdir -p dist
           rm -f dist/sakht-sar-installable.zip
-          cd wp-content/themes
-          zip -r ../../dist/sakht-sar-installable.zip sakht-sar \
-            -x 'sakht-sar/.git/*' \
-               'sakht-sar/node_modules/*' \
-               'sakht-sar/.DS_Store'
-          cd ../..
-          unzip -l dist/sakht-sar-installable.zip | grep -q 'sakht-sar/style.css'
-          unzip -l dist/sakht-sar-installable.zip | grep -q 'sakht-sar/index.php'
+          cd wp-content/themes/sakht-sar
+          zip -r ../../../dist/sakht-sar-installable.zip . \
+            -x '.git/*' \
+               'node_modules/*' \
+               '.DS_Store'
+          cd ../../../..
+          unzip -l dist/sakht-sar-installable.zip | grep -Eq '[[:space:]]style.css$'
+          unzip -l dist/sakht-sar-installable.zip | grep -Eq '[[:space:]]index.php$'
           unzip -t dist/sakht-sar-installable.zip
 
       - name: Upload installable ZIP
