@@ -18,6 +18,7 @@ add_action('after_setup_theme','sakhtsar_setup');
 function sakhtsar_assets() {
     wp_enqueue_style('sakhtsar-style', get_stylesheet_uri(), array(), SAKHTSAR_VERSION);
     wp_enqueue_style('sakhtsar-rtl-overrides', get_template_directory_uri().'/assets/css/rtl-overrides.css', array('sakhtsar-style'), SAKHTSAR_VERSION);
+    wp_enqueue_style('sakhtsar-footer-reference', get_template_directory_uri().'/assets/css/footer-reference.css', array('sakhtsar-style','sakhtsar-rtl-overrides'), SAKHTSAR_VERSION);
     wp_enqueue_script('sakhtsar-main', get_template_directory_uri().'/assets/js/main.js', array(), SAKHTSAR_VERSION, true);
 }
 add_action('wp_enqueue_scripts','sakhtsar_assets');
