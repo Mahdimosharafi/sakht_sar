@@ -2,6 +2,7 @@
 <style id="sakhtsar-footer-revamp">
 .site-footer{padding:38px 0 15px;background:linear-gradient(135deg,#06391d,#084b27);color:#fff}
 .site-footer .footer-grid{direction:rtl;grid-template-columns:1.55fr repeat(3,1fr);gap:35px;align-items:start}
+.site-footer .footer-grid > *{border:0 !important;border-left:0 !important;border-right:0 !important;border-inline-start:0 !important;border-inline-end:0 !important}
 .site-footer .footer-brand-block{grid-column:1}
 .site-footer .footer-contact-col{grid-column:5}
 .site-footer .footer-brand-block,.site-footer .footer-col{min-width:0;text-align:right}
