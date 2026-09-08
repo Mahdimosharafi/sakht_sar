@@ -3,9 +3,9 @@
 .site-footer{padding:38px 0 15px;background:linear-gradient(135deg,#06391d,#084b27);color:#fff}
 .site-footer .footer-grid{direction:rtl;grid-template-columns:1.55fr repeat(3,1fr);gap:35px;align-items:start}
 .site-footer .footer-grid > *{border:0 !important}
-.site-footer .footer-grid > .footer-brand-block,
-.site-footer .footer-grid > .footer-col:not(.footer-contact-col){border-left:1px solid rgba(255,255,255,.2) !important}
-.site-footer .footer-grid > .footer-contact-col{border-left:0 !important}
+.site-footer .footer-grid > .footer-col:nth-child(3),
+.site-footer .footer-grid > .footer-col:nth-child(4),
+.site-footer .footer-grid > .footer-col:nth-child(5){border-left:1px solid rgba(255,255,255,.2) !important}
 .site-footer .footer-brand-block{grid-column:1}
 .site-footer .footer-contact-col{grid-column:5}
 .site-footer .footer-brand-block,.site-footer .footer-col{min-width:0;text-align:right}
@@ -24,7 +24,7 @@
 .site-footer .footer-contact{display:flex;align-items:center;gap:8px;direction:rtl}
 .site-footer .contact-icon{width:18px;text-align:center;font-size:16px;color:#d8e9dc}
 .site-footer .footer-bottom{margin-top:25px;padding-top:11px;border-top:1px solid rgba(255,255,255,.14);color:#9fb9a5;text-align:center;font-size:7.5px}
-@media(max-width:1050px){.site-footer .footer-grid{grid-template-columns:repeat(2,1fr);gap:25px}.site-footer .footer-brand-block,.site-footer .footer-contact-col{grid-column:auto}}
+@media(max-width:1050px){.site-footer .footer-grid{grid-template-columns:repeat(2,1fr);gap:25px}.site-footer .footer-brand-block,.site-footer .footer-contact-col{grid-column:auto}.site-footer .footer-grid > .footer-col:nth-child(3),.site-footer .footer-grid > .footer-col:nth-child(4),.site-footer .footer-grid > .footer-col:nth-child(5){border-left:1px solid rgba(255,255,255,.2) !important}}
 @media(max-width:700px){.site-footer{padding:30px 0 14px}.site-footer .footer-grid{grid-template-columns:1fr 1fr;gap:24px 18px}.site-footer .footer-brand-block,.site-footer .footer-contact-col{grid-column:1/-1}.site-footer .footer-brand-block{text-align:center}.site-footer .footer-copy{max-width:100%;margin-inline:auto}.site-footer .footer-socials{justify-content:center}.site-footer .footer-col{text-align:right}.site-footer .footer-logo-image{max-width:170px}.site-footer .footer-bottom{margin-top:20px;font-size:7px}}
 </style>
 <footer class="site-footer">
