@@ -3,8 +3,9 @@
 .site-footer{padding:38px 0 15px;background:linear-gradient(135deg,#06391d,#084b27);color:#fff}
 .site-footer .footer-grid{direction:rtl;grid-template-columns:1.55fr repeat(3,1fr);gap:35px;align-items:start}
 .site-footer .footer-grid > *{border:0 !important;border-left:0 !important;border-right:0 !important;border-inline-start:0 !important;border-inline-end:0 !important}
+.site-footer .footer-grid > .footer-col:not(.footer-contact-col){border-left:1px solid rgba(255,255,255,.2) !important}
 .site-footer .footer-brand-block{grid-column:1}
-.site-footer .footer-contact-col{grid-column:5}
+.site-footer .footer-contact-col{grid-column:5;border-left:0 !important}
 .site-footer .footer-brand-block,.site-footer .footer-col{min-width:0;text-align:right}
 .site-footer .footer-brand{display:inline-flex;align-items:center}
 .site-footer .footer-logo-image{max-width:190px;height:auto;display:block}
@@ -35,7 +36,7 @@
           <?php elseif (has_custom_logo()) : ?>
             <?php echo wp_get_attachment_image(get_theme_mod('custom_logo'), 'full', false, array('class'=>'footer-logo-image','alt'=>get_bloginfo('name'))); ?>
           <?php else : ?>
-            <span class="footer-brand-fallback"><span class="footer-brand-wordmark">سخت سر</span><svg class="footer-brand-mountain" viewBox="0 0 80 44" aria-hidden="true" focusable="false"><path d="M4 38 25 15l9 10 10-17 32 30" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="m13 38 15-15 9 9 8-10 18 16" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round" opacity=".72"/></svg></span>
+            <span class="footer-brand-fallback"><span class="footer-brand-wordmark">سخت سر</span><svg class="footer-brand-mountain" viewBox="0 0 80 44" aria-hidden="true" focusable="false"><path d="M4 38 25 15l9 9 10-17 32 30" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="m13 38 15-15 9 9 8-10 18 16" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round" opacity=".72"/></svg></span>
           <?php endif; ?>
         </a>
         <p class="footer-copy"><?php echo esc_html(sakhtsar_get('footer_description','هدف ما معرفی زیبایی‌ها، فرهنگ و ظرفیت‌های گردشگری رامسر به شماست.')); ?></p>
