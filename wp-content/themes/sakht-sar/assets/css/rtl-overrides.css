@@ -1,4 +1,4 @@
-/* Sakht Sar 2.0 — RTL compatibility layer */
+/* Sakht Sar — footer refinement */
 html[dir="rtl"] body,.rtl{direction:rtl}
 .sakhtsar-home,.site-header,.site-footer{direction:rtl}
 .main-nav,.hero-copy,.weather-card,.video-copy{direction:rtl}
@@ -6,4 +6,24 @@ html[dir="rtl"] body,.rtl{direction:rtl}
 .hero-search input,.search-category{direction:rtl}
 .wp-block-search input,.wp-block-search button{font-family:inherit}
 img{max-width:100%;height:auto}
+
+/* FOOTER — reference layout: brand right, contact left */
+.site-footer{margin-top:58px;padding:42px 0 18px;background:linear-gradient(135deg,#073b1d 0%,#0b5129 52%,#06371b 100%);color:#fff;position:relative;overflow:hidden}
+.site-footer:before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 88% 15%,rgba(255,255,255,.06),transparent 28%),radial-gradient(circle at 8% 80%,rgba(255,255,255,.035),transparent 30%)}
+.site-footer .container{position:relative;z-index:1}
+.footer-grid{display:grid;grid-template-columns:1.35fr 1fr 1fr 1fr 1.25fr;direction:rtl;gap:0;align-items:start}
+.footer-brand-block,.footer-col{min-height:150px;padding:0 28px;border-left:1px solid rgba(255,255,255,.2)}
+.footer-grid > :first-child{padding-right:8px}
+.footer-grid > :last-child{border-left:0;padding-left:8px}
+.footer-brand-block{text-align:right}
+.footer-brand{display:flex;align-items:center;gap:8px;color:#fff;font-weight:900;font-size:25px;line-height:1.15}
+.footer-logo-image{display:block;max-width:190px}.footer-logo-image .custom-logo{width:auto;max-width:190px;max-height:58px;object-fit:contain;filter:brightness(0) invert(1)}
+.footer-brand-wordmark{font-weight:950;letter-spacing:-1px}.footer-brand-mark{font-size:28px;transform:rotate(-25deg);display:inline-block}
+.footer-copy{max-width:250px;margin:12px 0 13px;color:rgba(255,255,255,.72);font-size:10px;line-height:2.15}
+.footer-socials{display:flex;gap:8px;align-items:center;direction:ltr}.footer-socials a{width:27px;height:27px;border:1px solid rgba(255,255,255,.42);border-radius:50%;display:inline-flex;align-items:center;justify-content:center;color:#fff;font-size:13px;transition:all .2s ease}.footer-socials a:hover{background:#fff;color:#0b4b27;transform:translateY(-2px)}
+.footer-col{text-align:right}.footer-col h3{margin:0 0 13px;color:#fff;font-size:13px;font-weight:900}.footer-col a{display:block;margin:0 0 7px;color:rgba(255,255,255,.78);font-size:10px;line-height:1.8;transition:color .2s ease,transform .2s ease}.footer-col a:hover{color:#fff;transform:translateX(-3px)}
+.footer-contact-col{padding-right:28px}.footer-contact{display:flex;align-items:center;gap:8px;margin:0 0 12px;color:rgba(255,255,255,.84);font-size:10px;direction:rtl}.footer-contact span{width:20px;text-align:center;font-size:17px;color:#fff}
+.footer-bottom{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:24px;padding-top:12px;border-top:1px solid rgba(255,255,255,.16);color:rgba(255,255,255,.65);font-size:9px;text-align:center}
+@media(max-width:1000px){.footer-grid{grid-template-columns:repeat(3,1fr)}.footer-brand-block{grid-column:span 3;border-left:0;border-bottom:1px solid rgba(255,255,255,.16);padding:0 0 24px;min-height:0;margin-bottom:25px}.footer-copy{max-width:420px}.footer-col:nth-child(4){border-left:0}}
+@media(max-width:650px){.site-footer{padding-top:32px}.footer-grid{grid-template-columns:1fr 1fr}.footer-brand-block{grid-column:span 2}.footer-col{padding:0 14px;margin-bottom:20px;min-height:0}.footer-grid > :nth-child(3){border-left:0}.footer-grid > :last-child{padding-left:14px}.footer-contact-col{grid-column:span 2;padding-right:0}.footer-bottom{flex-direction:column;gap:2px}}
 @media(max-width:782px){body.admin-bar .site-header{top:46px}}
