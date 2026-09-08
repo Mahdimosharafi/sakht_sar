@@ -44,6 +44,8 @@ document.addEventListener('DOMContentLoaded',function(){
         window.alert('مرورگر شما امکان تشخیص موقعیت مکانی را ندارد.');
         return;
       }
+      const destination=button.getAttribute('data-nearby-url');
+      if(!destination)return;
       button.classList.add('is-loading');
       button.setAttribute('aria-busy','true');
       navigator.geolocation.getCurrentPosition(function(position){
@@ -52,7 +54,7 @@ document.addEventListener('DOMContentLoaded',function(){
           lat:position.coords.latitude.toFixed(6),
           lng:position.coords.longitude.toFixed(6)
         });
-        window.location.href='<?php echo esc_url(home_url('/places/')); ?>?'+params.toString();
+        window.location.href=destination+'?'+params.toString();
       },function(){
         button.classList.remove('is-loading');
         button.removeAttribute('aria-busy');
