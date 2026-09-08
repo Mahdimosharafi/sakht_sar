@@ -37,6 +37,32 @@ document.addEventListener('DOMContentLoaded',function(){
     });
   });
 
+  /* Nearby: ask for the visitor's location and preserve coordinates for the places page. */
+  document.querySelectorAll('[data-nearby]').forEach(function(button){
+    button.addEventListener('click',function(){
+      if(!navigator.geolocation){
+        window.alert('مرورگر شما امکان تشخیص موقعیت مکانی را ندارد.');
+        return;
+      }
+      const destination=button.getAttribute('data-nearby-url');
+      if(!destination)return;
+      button.classList.add('is-loading');
+      button.setAttribute('aria-busy','true');
+      navigator.geolocation.getCurrentPosition(function(position){
+        const params=new URLSearchParams({
+          nearby:'1',
+          lat:position.coords.latitude.toFixed(6),
+          lng:position.coords.longitude.toFixed(6)
+        });
+        window.location.href=destination+'?'+params.toString();
+      },function(){
+        button.classList.remove('is-loading');
+        button.removeAttribute('aria-busy');
+        window.alert('برای استفاده از «نزدیک من»، اجازه دسترسی به موقعیت مکانی را فعال کنید.');
+      },{enableHighAccuracy:true,timeout:10000,maximumAge:300000});
+    });
+  });
+
   /* Horizontal places carousel. */
   document.querySelectorAll('.carousel-btn').forEach(function(button){
     button.addEventListener('click',function(){
@@ -61,6 +87,6 @@ document.addEventListener('DOMContentLoaded',function(){
         obs.unobserve(entry.target);
       });
     },{threshold:.08,rootMargin:'0px 0px -25px'});
-    items.forEach(function(item){item.classList.add('ss-reveal');observer.observe(item)});
+    items.forEach(function(item){item.classList.add('ss-reveal');observer.observe(item)}
   }
 });
