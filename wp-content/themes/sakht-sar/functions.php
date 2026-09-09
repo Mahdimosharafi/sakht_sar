@@ -4,7 +4,7 @@
  */
 if (!defined('ABSPATH')) exit;
 
-define('SAKHTSAR_VERSION', '2.1.0');
+define('SAKHTSAR_VERSION', '2.2.0');
 
 function sakhtsar_setup() {
     add_theme_support('title-tag');
@@ -19,6 +19,9 @@ function sakhtsar_assets() {
     wp_enqueue_style('sakhtsar-style', get_stylesheet_uri(), array(), SAKHTSAR_VERSION);
     wp_enqueue_style('sakhtsar-rtl-overrides', get_template_directory_uri().'/assets/css/rtl-overrides.css', array('sakhtsar-style'), SAKHTSAR_VERSION);
     wp_enqueue_style('sakhtsar-footer-reference', get_template_directory_uri().'/assets/css/footer-reference.css', array('sakhtsar-style','sakhtsar-rtl-overrides'), SAKHTSAR_VERSION);
+    if (get_query_var('sakhtsar_profile')) {
+        wp_enqueue_style('sakhtsar-profile', get_template_directory_uri().'/assets/css/profile.css', array('sakhtsar-style','sakhtsar-rtl-overrides'), SAKHTSAR_VERSION);
+    }
     wp_enqueue_script('sakhtsar-main', get_template_directory_uri().'/assets/js/main.js', array(), SAKHTSAR_VERSION, true);
 }
 add_action('wp_enqueue_scripts','sakhtsar_assets');
@@ -45,6 +48,21 @@ function sakhtsar_register_content() {
 }
 add_action('init','sakhtsar_register_content');
 
+function sakhtsar_profile_route() {
+    add_rewrite_rule('^profile/?$','index.php?sakhtsar_profile=1','top');
+    add_rewrite_tag('%sakhtsar_profile%','([01])');
+}
+add_action('init','sakhtsar_profile_route',1);
+
+function sakhtsar_profile_template($template) {
+    if (get_query_var('sakhtsar_profile')) {
+        $profile = get_template_directory().'/profile.php';
+        if (file_exists($profile)) return $profile;
+    }
+    return $template;
+}
+add_filter('template_include','sakhtsar_profile_template');
+
 function sakhtsar_meta_boxes() {
     add_meta_box('sakhtsar_place_details','جزئیات مکان','sakhtsar_place_box','place','normal','high');
     add_meta_box('sakhtsar_trip_details','جزئیات مسیر','sakhtsar_trip_box','trip','normal','high');
@@ -58,8 +76,8 @@ function sakhtsar_meta_input($key,$label,$value,$type='text') {
 }
 function sakhtsar_place_box($post) {
     wp_nonce_field('sakhtsar_meta','sakhtsar_meta_nonce');
-    sakhtsar_meta_input('sakhtsar_address','آدرس',$post->address??get_post_meta($post->ID,'sakhtsar_address',true));
-    sakhtsar_meta_input('sakhtsar_rating','امتیاز',$post->rating??get_post_meta($post->ID,'sakhtsar_rating',true));
+    sakhtsar_meta_input('sakhtsar_address','آدرس',get_post_meta($post->ID,'sakhtsar_address',true));
+    sakhtsar_meta_input('sakhtsar_rating','امتیاز',get_post_meta($post->ID,'sakhtsar_rating',true));
     sakhtsar_meta_input('sakhtsar_lat','عرض جغرافیایی',get_post_meta($post->ID,'sakhtsar_lat',true));
     sakhtsar_meta_input('sakhtsar_lng','طول جغرافیایی',get_post_meta($post->ID,'sakhtsar_lng',true));
 }
@@ -103,5 +121,5 @@ function sakhtsar_get($key,$fallback=''){return get_theme_mod('sakhtsar_'.$key,$
 function sakhtsar_img($url){return esc_url($url);}
 function sakhtsar_featured_image($post_id,$fallback=''){ $url=get_the_post_thumbnail_url($post_id,'large'); return $url?:$fallback; }
 
-function sakhtsar_flush_rewrites(){ if(get_option('sakhtsar_rewrite_version')!=='2.1.0'){flush_rewrite_rules(false);update_option('sakhtsar_rewrite_version','2.1.0');} }
+function sakhtsar_flush_rewrites(){ if(get_option('sakhtsar_rewrite_version')!=='2.2.0'){flush_rewrite_rules(false);update_option('sakhtsar_rewrite_version','2.2.0');} }
 add_action('init','sakhtsar_flush_rewrites',99);
